@@ -127,7 +127,7 @@
 	"gitlab.com": {
 		"name": "Gitlab",
 		"link": "*://gitlab.com/*",
-		"script": "gitlab.js"
+		"script": "gitlab-plus.js"
 	},
 	"calendar.google.com": {
 		"name": "Google calendar",

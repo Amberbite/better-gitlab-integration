@@ -52,7 +52,7 @@ function setTimeEntryInProgress(entry) {
 
 aBrowser.runtime.onInstalled.addListener(async (details) => {
 	if (details.reason === 'install') {
-		aBrowser.tabs.create({ url: clockifyProd });
+		//aBrowser.tabs.create({ url: clockifyProd });
 		aBrowser.action.setIcon({
 			path: iconPathEnded,
 		});
@@ -222,7 +222,7 @@ setClockifyOriginsToStorage();
 UserWorkspaceStorage.getSetWorkspaceSettings();
 UserWorkspaceStorage.getWasRegionalEverAllowed();
 UserWorkspaceStorage.getPermissionsForUser().then((response) => {
-	if (response.data) {
+	if (response && response.data) {
 		const isUserOwnerOrAdmin =
 			response.data.filter(
 				(permission) =>
@@ -433,71 +433,73 @@ self.addEventListener('offline', () => {
     - implement getToken inside of fetch:get like in token-service.js (like we did in HttpWrapperService.get)
 */
 
-aBrowser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-	switch (request.eventName) {
-		case 'takeTimeEntryInProgress':
-		case 'endInProgress':
-		case 'fetchEntryInProgress':
-		case 'getDefaultProjectTask':
-		case 'getRecentTimeEntries':
-		case 'getUser':
-		case 'getUserRoles':
-		case 'getBoot':
-		case 'getPermissionsForUser':
-		case 'getWorkspaceSettings':
-		case 'getWorkspacesOfUser':
-		case 'getWasRegionalEverAllowed':
-			return ClockifyIntegration.callFunction(
-				request.eventName,
-				null,
-				sendResponse
-			);
-		case 'getMemberProfile':	
-		case 'getProjectsByIds':
-		case 'startWithDescription':
-		case 'getTimeEntries':
-		case 'changeStart':
-		case 'editTimeInterval':
-		case 'getEntryInProgress':
-		case 'setDescription':
-		case 'removeProject':
-		case 'getProjects':
-		case 'getLastUsedProjectFromTimeEntries':
-		case 'getProjectTasks':
-		case 'getTaskOfProject':
-		case 'submitDescription':
-		case 'createProject':
-		case 'editProject':
-		case 'createTask':
-		case 'editTask':
-		case 'getTags':
-		case 'createTag':
-		case 'editTags':
-		case 'deleteTimeEntry':
-		case 'searchEntries':
-		case 'duplicateTimeEntry':
-		case 'deleteTimeEntries':
-		case 'removeProjectAsFavorite':
-		case 'makeProjectFavorite':
-		case 'editBillable':
-		case 'submitTime':
-		case 'getWSCustomField':
-		case 'submitCustomField':
-		case 'generateManualEntryData':
-		case 'removeTask':
-		case 'setDefaultWorkspace':
-		case 'signup':
-		case 'getClientsWithFilter':
-		case 'createClient':
-			return ClockifyIntegration.callFunction(
-				request.eventName,
-				request,
-				sendResponse
-			);
-		default:
-			return false;
-	}
-});
+if (aBrowser.runtime.onMessage) {
+	aBrowser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+		switch (request.eventName) {
+			case 'takeTimeEntryInProgress':
+			case 'endInProgress':
+			case 'fetchEntryInProgress':
+			case 'getDefaultProjectTask':
+			case 'getRecentTimeEntries':
+			case 'getUser':
+			case 'getUserRoles':
+			case 'getBoot':
+			case 'getPermissionsForUser':
+			case 'getWorkspaceSettings':
+			case 'getWorkspacesOfUser':
+			case 'getWasRegionalEverAllowed':
+				return ClockifyIntegration.callFunction(
+					request.eventName,
+					null,
+					sendResponse
+				);
+			case 'getMemberProfile':	
+			case 'getProjectsByIds':
+			case 'startWithDescription':
+			case 'getTimeEntries':
+			case 'changeStart':
+			case 'editTimeInterval':
+			case 'getEntryInProgress':
+			case 'setDescription':
+			case 'removeProject':
+			case 'getProjects':
+			case 'getLastUsedProjectFromTimeEntries':
+			case 'getProjectTasks':
+			case 'getTaskOfProject':
+			case 'submitDescription':
+			case 'createProject':
+			case 'editProject':
+			case 'createTask':
+			case 'editTask':
+			case 'getTags':
+			case 'createTag':
+			case 'editTags':
+			case 'deleteTimeEntry':
+			case 'searchEntries':
+			case 'duplicateTimeEntry':
+			case 'deleteTimeEntries':
+			case 'removeProjectAsFavorite':
+			case 'makeProjectFavorite':
+			case 'editBillable':
+			case 'submitTime':
+			case 'getWSCustomField':
+			case 'submitCustomField':
+			case 'generateManualEntryData':
+			case 'removeTask':
+			case 'setDefaultWorkspace':
+			case 'signup':
+			case 'getClientsWithFilter':
+			case 'createClient':
+				return ClockifyIntegration.callFunction(
+					request.eventName,
+					request,
+					sendResponse
+				);
+			default:
+				return false;
+		}
+	});
+}
 
 // function startWithDescription(request) {
 // 	return new Promise(async (resolve) => {
@@ -563,3 +565,4 @@ function afterStartTimer() {
 		});
 	}
 })();
+/**/

@@ -204,9 +204,10 @@ export default (function () {
 		({ lang, locale_messages }) => {
 			objLocales.lang = lang;
 			objLocales.messages = locale_messages;
+			/* Has to be commented out because it's throwing an error in chrome (windows)
 			self.aBrowser.runtime.sendMessage({
 				eventName: 'updateContexMenu',
-			});
+			});*/
 		}
 	);
 
